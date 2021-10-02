@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tarjeta-credito',
@@ -15,13 +16,13 @@ export class TarjetaCreditoComponent implements OnInit {
   ];
 
   form : FormGroup;
-
-  constructor(private fb: FormBuilder) { 
+// validators.required este valida que este campo se obligatorio max y min length es para definir el numero maximo de caracteres permitidos
+  constructor(private fb: FormBuilder, private toastr: ToastrService) { 
     this.form = this.fb.group(
-     { titulo: [''],
-      tarjeta: [''],
-      fechaexpiracion: [''],
-      cvv: ['']
+     { titulo: ['',Validators.required], 
+      tarjeta: ['',[Validators.required, Validators.maxLength(16), Validators.minLength(16)]],
+      fechaexpiracion: ['',[Validators.required,Validators.maxLength(5),Validators.minLength(5)]],
+      cvv: ['',[Validators.required,Validators.maxLength(3),Validators.minLength(3)]]
     }
     )
   }
@@ -29,7 +30,7 @@ export class TarjetaCreditoComponent implements OnInit {
   ngOnInit(): void {
   }
   agregarTarjeta(){
-
+console.log(this.form);
     const tarjeta :any ={
       titulo: this.form.get('titulo')?.value ,
       tarjeta: this.form.get('tarjeta')?.value ,
@@ -37,6 +38,14 @@ export class TarjetaCreditoComponent implements OnInit {
       cvv: this.form.get('cvv')?.value 
     }
 this.listTarjetas.push(tarjeta);
+this.toastr.success('Tarjeta registrada con exito', 'Tarjeta creada');
 this.form.reset();
   }
+
+  eliminarRegistro(index: number){
+    // el metodo splice remueve un elemento  y la cantidad de el elemento 
+this.listTarjetas.splice(index,1);
+this.toastr.error('Se borro con exito la tarjeta', 'Eliminacion de tarjeta')
+  }
+ 
 }
