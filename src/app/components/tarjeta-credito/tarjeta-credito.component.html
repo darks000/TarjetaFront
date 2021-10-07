@@ -12,8 +12,8 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body text-center">
-                    <h3> Agregar tarjeta</h3>
-                    <form [formGroup]="form" (ngSubmit)="agregarTarjeta()">
+                    <h3> {{accion | uppercase}}</h3>
+                    <form [formGroup]="form" (ngSubmit)="guadarTarjeta()">
                         <div class="input-group input-group-lg mb-3">
                             <span class="input-group-text">
                                 <i class="fas fa-user" [class.green-ico]="this.form.get('titulo')?.valid"
@@ -65,10 +65,10 @@
                                 <td>{{tarjetas.tarjeta}}</td>
                                 <td>{{tarjetas.fechaexpiracion}}</td>
                                 <td>
-                                    <i class="far fa-edit text-info"></i>
+                                    <i (click)="editarTarjeta(tarjetas)" class="far fa-edit text-info"></i>
                                 </td>
                                 <td>
-                                    <i (click)="eliminarRegistro(i)" class="far fa-trash-alt text-danger"></i>
+                                    <i (click)="eliminarRegistro(tarjetas.id)" class="far fa-trash-alt text-danger"></i>
                                 </td>
                             </tr>
                         </tbody>
